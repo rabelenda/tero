@@ -84,4 +84,10 @@ jobs:
           cp ../sample.env ../../.env
           poetry run alembic revision
           # Run pytest from it as root to allow cleanup of files created by root-owned docker containers
-          sudo -E "$(poetry env info --path)/bin/pytest"
+          sudo -E "$(poetry env info --path)/bin/pytest" --junitxml=pytest-results.xml
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pytest-results
+          path: src/backend/pytest-results.xml
+
